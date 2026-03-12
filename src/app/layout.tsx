@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {Inter,IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { TooltipProvider } from "@/components/ui/tooltip"
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmplexmono = IBM_Plex_Mono({
+  weight: ["400", "700"],
+  variable: "--font-plex-mono",
   subsets: ["latin"],
 });
 
@@ -23,11 +25,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${ibmplexmono.variable} antialiased`}
       >
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          <ThemeProvider
+            attribute={"class"}
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >{children}</ThemeProvider>
+        </TooltipProvider>
       </body>
     </html>
   );
