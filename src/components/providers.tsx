@@ -2,8 +2,6 @@
 
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
   useAuth,
   UserButton,
 } from "@clerk/nextjs";
