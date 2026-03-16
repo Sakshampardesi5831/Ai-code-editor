@@ -1,0 +1,7 @@
+procs:
+  inngest:
+    cmd: ["npm.cmd", "run", "inngest"]
+  dev:
+    cmd: ["npm.cmd", "run", "dev"]
+  convex:
+    cmd: ["npm.cmd", "run", "convex"]
