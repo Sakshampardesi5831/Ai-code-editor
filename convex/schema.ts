@@ -9,10 +9,20 @@ export default defineSchema({
             v.union(
                 v.literal("pending"),
                 v.literal("completed"),
-                v.literal("failed")
+                v.literal("failed"),
+                v.literal("importing"),
             )
-        )
-        ,
-        createdAt:v.number()
+        ),
+        exportStatus:
+        v.optional(
+            v.union(
+                v.literal("exporting"),
+                v.literal("completed"),
+                v.literal("failed"),
+                v.literal("canceled")
+            )
+        ),
+        exportRepoUrl:v.optional(v.string()),
+        updatedAt:v.number()
     }).index("by_owner",["ownerId"]),
 })
