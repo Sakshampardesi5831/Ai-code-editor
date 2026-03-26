@@ -2,6 +2,13 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Doc } from "../../../../convex/_generated/dataModel";
+
+export const useProject = (projectId: Id<"projects">) => {
+  return useQuery(api.projects.getById, {
+    id: projectId,
+  });
+};
+
 export const useProjects = () => {
   const projects = useQuery(api.projects.get);
   return projects;
@@ -33,6 +40,32 @@ export const useCreateProject = () => {
           newProject,
         ]);
       }
+    },
+  );
+};
+
+
+
+export const useRenameProject = (projectId:Id<"projects">) => {
+  return useMutation(api.projects.rename).withOptimisticUpdate(
+    (localstore, args) => {
+      const existingProject  = localstore.getQuery(api.projects.getById,{id:args.id})
+ 
+      if (existingProject !== undefined && existingProject!==null ) {
+          localstore.setQuery(api.projects.getById, {id:args.id}, {
+            ...existingProject,
+            name: args.name,
+            // eslint-disable-next-line react-hooks/purity
+            updatedAt: Date.now(),
+          })
+      }
+     
+        const existingProjects = localstore.getQuery(api.projects.get);
+        if (existingProjects !== undefined) {
+          localstore.setQuery(api.projects.get,{},existingProjects.map(
+            (project)=>project._id===args.id?{...project,name:args.name,updatedAt:Date.now()}:project))
+
+        }
     },
   );
 };
